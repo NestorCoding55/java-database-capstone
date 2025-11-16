@@ -11,6 +11,7 @@
     <script th:src="@{/js/util.js}" defer></script>
     <script th:src="@{/js/components/header.js}" defer></script>
     <script th:src="@{/js/components/footer.js}" defer></script>
+    <script th:src="@{/js/components/modals.js}" defer></script> <!-- Added modals -->
 </head>
 <body onload="renderContent()">
     <div class="container">
@@ -47,11 +48,59 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="closeModal" class="close">&times;</span>
-            <div id="modal-body"></div>
+            <div id="modal-body">
+                <!-- Add Doctor Form will be inserted here -->
+                <h3>Add New Doctor</h3>
+                <form id="addDoctorForm">
+                    <input type="text" id="doctorName" placeholder="Doctor Name" required>
+                    <input type="email" id="doctorEmail" placeholder="Email" required>
+                    <input type="password" id="doctorPassword" placeholder="Password" required>
+                    <input type="text" id="doctorPhone" placeholder="Phone" required>
+                    <input type="text" id="doctorSpecialty" placeholder="Specialty" required>
+                    <button type="button" onclick="adminAddDoctor()">Add Doctor</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <script type="module" src="../../static/js/services/adminDashboard.js" defer></script>
-    <script type="module" src="../../static/js/components/doctorCard.js" defer></script>
+    <!-- Use Thymeleaf paths for scripts -->
+    <script type="module" th:src="@{/js/services/adminDashboard.js}" defer></script>
+    <script type="module" th:src="@{/js/components/doctorCard.js}" defer></script>
+
+    <!-- Add basic modal functionality -->
+    <script>
+        // Basic modal functions
+        function openModal(modalType) {
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Close modal when clicking X
+        document.getElementById('closeModal').onclick = closeModal;
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Basic function to add doctor (should be in adminDashboard.js)
+        function adminAddDoctor() {
+            const name = document.getElementById('doctorName').value;
+            const email = document.getElementById('doctorEmail').value;
+            const password = document.getElementById('doctorPassword').value;
+            const phone = document.getElementById('doctorPhone').value;
+            const specialty = document.getElementById('doctorSpecialty').value;
+            
+            console.log('Adding doctor:', { name, email, phone, specialty });
+            alert('Add doctor functionality would be implemented here');
+            closeModal();
+        }
+    </script>
 </body>
 </html>

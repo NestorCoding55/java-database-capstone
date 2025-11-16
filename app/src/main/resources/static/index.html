@@ -11,6 +11,7 @@
     <script src="../js/render.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
+    <script src="../js/components/modals.js" defer></script> <!-- Added modals.js -->
 </head>
 <body>
     <div class="container">
@@ -20,9 +21,9 @@
             <main class="main-content">
                 <h2>Select Your Role</h2>
                 <div class="role-selection">
-                    <button id="adminBtn" class="role-btn" onclick="selectRole('admin')">Admin</button>
-                    <button id="doctorBtn" class="role-btn" onclick="selectRole('doctor')">Doctor</button>
-                    <button id="patientBtn" class="role-btn" onclick="selectRole('patient')">Patient</button>
+                    <button id="adminBtn" class="role-btn">Admin</button>
+                    <button id="doctorBtn" class="role-btn">Doctor</button>
+                    <button id="patientBtn" class="role-btn">Patient</button>
                 </div>
             </main>
             
@@ -39,5 +40,67 @@
     </div>
 
     <script type="module" src="../js/services/index.js" defer></script>
+    
+    <!-- Add this inline script for basic functionality -->
+    <script>
+        // Basic role selection function
+        function selectRole(role) {
+            localStorage.setItem('userRole', role);
+            console.log('Role selected:', role);
+            
+            // Show login modal for admin and doctor
+            if (role === 'admin' || role === 'doctor') {
+                openModal(role + 'Login');
+            } else if (role === 'patient') {
+                // Redirect patient to patient dashboard
+                window.location.href = '/pages/patientDashboard.html';
+            }
+        }
+        
+        // Basic modal function (should be in modals.js)
+        function openModal(modalType) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            // Simple modal content based on type
+            if (modalType === 'adminLogin') {
+                modalBody.innerHTML = `
+                    <h3>Admin Login</h3>
+                    <input type="text" id="adminUsername" placeholder="Username">
+                    <input type="password" id="adminPassword" placeholder="Password">
+                    <button onclick="adminLoginHandler()">Login</button>
+                `;
+            } else if (modalType === 'doctorLogin') {
+                modalBody.innerHTML = `
+                    <h3>Doctor Login</h3>
+                    <input type="email" id="doctorEmail" placeholder="Email">
+                    <input type="password" id="doctorPassword" placeholder="Password">
+                    <button onclick="doctorLoginHandler()">Login</button>
+                `;
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        // Close modal function
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Add event listeners after DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('adminBtn').addEventListener('click', () => selectRole('admin'));
+            document.getElementById('doctorBtn').addEventListener('click', () => selectRole('doctor'));
+            document.getElementById('patientBtn').addEventListener('click', () => selectRole('patient'));
+        });
+    </script>
 </body>
 </html>

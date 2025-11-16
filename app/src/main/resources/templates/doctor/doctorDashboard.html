@@ -20,6 +20,8 @@
             <div id="header"></div>
             
             <main class="main-content">
+                <h2 class="dashboard-title">Patient Appointments</h2>
+                
                 <div class="dashboard-controls">
                     <input type="text" id="searchBar" class="searchBar" placeholder="Search patients by name or ID">
                     <div class="filter-section">
@@ -28,20 +30,36 @@
                     </div>
                 </div>
                 
-                <table id="patientTable" class="patient-table">
-                    <thead>
-                        <tr>
-                            <th>Patient ID</th>
-                            <th>Name</th>
-                            <th>Phone No.</th>
-                            <th>Email</th>
-                            <th>Prescription</th>
-                        </tr>
-                    </thead>
-                    <tbody id="patientTableBody">
-                        <!-- Patient rows will be dynamically inserted here -->
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table id="patientTable" class="patient-table">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Phone No.</th>
+                                <th>Email</th>
+                                <th>Prescription</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody">
+                            <!-- Loading state -->
+                            <tr id="loadingRow">
+                                <td colspan="5" class="loading-message">Loading appointments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Empty state (hidden by default) -->
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <p>No appointments found for the selected date.</p>
+                    </div>
+                    
+                    <!-- Error state (hidden by default) -->
+                    <div id="errorState" class="error-state" style="display: none;">
+                        <p>Error loading appointments. Please try again.</p>
+                        <button onclick="loadAppointments()">Retry</button>
+                    </div>
+                </div>
             </main>
             
             <div id="footer"></div>
@@ -50,5 +68,42 @@
 
     <script type="module" th:src="@{/js/services/patientServices.js}" defer></script>
     <script type="module" th:src="@{/js/services/doctorDashboard.js}" defer></script>
+
+    <!-- Add basic functionality in case modules fail -->
+    <script>
+        // Basic function to show loading state
+        function showLoading() {
+            document.getElementById('loadingRow').style.display = '';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+        }
+
+        // Basic function to show empty state
+        function showEmptyState() {
+            document.getElementById('loadingRow').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('errorState').style.display = 'none';
+        }
+
+        // Basic function to show error state
+        function showErrorState() {
+            document.getElementById('loadingRow').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+        }
+
+        // Basic load appointments function
+        function loadAppointments() {
+            showLoading();
+            console.log('Loading appointments...');
+            // This would be implemented in doctorDashboard.js
+        }
+
+        // Set today's date as default in date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('datePicker').value = today;
+        });
+    </script>
 </body>
 </html>
