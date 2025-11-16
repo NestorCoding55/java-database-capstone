@@ -1,8 +1,7 @@
 package com.project.back_end.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;

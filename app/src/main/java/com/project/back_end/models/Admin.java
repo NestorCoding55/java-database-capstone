@@ -1,7 +1,8 @@
 package com.project.back_end.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
